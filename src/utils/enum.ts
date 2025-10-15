@@ -10,3 +10,10 @@ export enum AttendanceStatusEnum {
   ABSENT = "absent",
   LEAVE = "leave",
 }
+
+export enum OTPType {
+  LOGIN = 'login',
+  REGISTRATION = 'registration',
+  FORGET_PASSWORD = 'forget_password',
+  RESET_PASSWORD = 'reset_password',
+}
