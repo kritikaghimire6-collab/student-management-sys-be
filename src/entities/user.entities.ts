@@ -1,12 +1,13 @@
-import { Column, Entity, OneToMany } from "typeorm";
-import { Base } from "./base.entities";
-import { RoleEnum } from "../utils/enum";
-import { Attendance } from "./attendance.entities";
-import { Result } from "./result.entities";
+import {Column, Entity, OneToMany} from "typeorm";
+import {Base} from "./base.entities";
+import {RoleEnum} from "../utils/enum";
+import {Attendance} from "./attendance.entities";
+import {Result} from "./result.entities";
+import {OTP} from "./otp.entities";
 
-@Entity({ name: "users" })
+@Entity({name: "users"})
 export class User extends Base {
-  @Column({ name: "name", type: "varchar", length: 100, nullable: false })
+  @Column({name: "name", type: "varchar", length: 100, nullable: false})
   name!: string;
 
   @Column({
@@ -18,10 +19,16 @@ export class User extends Base {
   })
   email!: string;
 
-  @Column({ name: "password", type: "varchar", length: 255, nullable: false })
+  @Column({name: "password", type: "varchar", length: 255, nullable: false})
   password!: string;
 
-  @Column({ name: "role", type: "enum", enum: RoleEnum, nullable: true })
+  @Column({
+    name: "role",
+    type: "enum",
+    enum: RoleEnum,
+    nullable: true,
+    default: RoleEnum.STUDENT,
+  })
   role!: RoleEnum;
 
   // Student’s attendance records
@@ -39,4 +46,7 @@ export class User extends Base {
   // Faculty’s recorded results
   @OneToMany(() => Result, (result) => result.recorder)
   resultsRecorded!: Result[];
+
+  @OneToMany(() => OTP, (otp) => otp.user)
+  otp!: OTP[];
 }

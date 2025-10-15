@@ -1,4 +1,4 @@
-import { Request, Express } from "express";
+import {Request, Express} from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -6,7 +6,7 @@ import fs from "fs";
 // Ensure the "public/uploads" directory exists
 const uploadDir = path.join(__dirname, "../public/uploads");
 if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+  fs.mkdirSync(uploadDir, {recursive: true});
 }
 
 // Function to sanitize/filter images
@@ -45,7 +45,7 @@ function sanitizeImage(
   } else if (mimeTypeBrochure && isAllowedExtBrochure) {
     return cb(null, true);
   } else {
-    cb({ message: "File type not allowed!" } as Error, false);
+    cb({message: "File type not allowed!"} as Error, false);
   }
 }
 
@@ -61,7 +61,7 @@ function sanitizeExcelFile(
   if (isAllowedExt) {
     return cb(null, true);
   } else {
-    cb({ message: "File type not allowed!" } as Error, false);
+    cb({message: "File type not allowed!"} as Error, false);
   }
 }
 
@@ -80,7 +80,7 @@ const diskStorage = multer.diskStorage({
 export const uploadMedia = multer({
   storage: diskStorage,
   fileFilter: (req: Request, file, callback) => {
-    sanitizeImage(file, callback);
+    sanitizeImage(file, callback as any);
   },
   limits: {
     fileSize: 1024 * 1024 * 5, // 5MB
@@ -91,18 +91,21 @@ export const uploadMedia = multer({
 export const uploadWhatsappMedia = multer({
   storage: diskStorage,
   fileFilter: (req: Request, file, callback) => {
-    sanitizeImage(file, callback);
+    sanitizeImage(file, callback as any);
   },
   limits: {
     fileSize: 1024 * 1024 * 20, // 20MB
   },
 });
 
-// Excel upload middleware
+// Memory storage configuration for Excel files
+const memoryStorage = multer.memoryStorage();
+
+// Excel upload middleware with memory storage
 export const uploadExcel = multer({
-  storage: diskStorage,
+  storage: memoryStorage, // Use memory storage instead of disk storage
   fileFilter: (req: Request, file, callback) => {
-    sanitizeExcelFile(file, callback);
+    sanitizeExcelFile(file, callback as any);
   },
   limits: {
     fileSize: 1024 * 1024 * 10, // 10MB
