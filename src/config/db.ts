@@ -1,9 +1,9 @@
-import {join} from "node:path";
-import {DataSource} from "typeorm";
+import { join } from "node:path";
+import { DataSource } from "typeorm";
 import env from "./env";
 import dotenv from "dotenv";
 
-dotenv.config({path: "../.env"});
+dotenv.config({ path: "../.env" });
 
 const {
   DB_HOST,
@@ -14,8 +14,6 @@ const {
   DB_SYNCHRONIZE,
   NODE_ENV,
 } = env;
-
-
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -28,7 +26,7 @@ export const AppDataSource = new DataSource({
   // migrations: [join(__dirname, "../database/migrations/**/*.ts")],
   // migrationsRun: true,
   synchronize: true,
-  logging: NODE_ENV === "local",
+  logging: true,
 
   //@ts-ignore
   cli: {
